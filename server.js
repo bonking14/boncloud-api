@@ -11,7 +11,7 @@ const app = express();
 app.use(helmet());
 
 // CORS completamente abierto para GitHub Pages
-app.use(cors({
+app.use(cors());
     origin: ['https://bonking14.github.io', 'http://localhost:4000', 'http://127.0.0.1:5500'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
