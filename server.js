@@ -1,4 +1,4 @@
-const express = require('express');
+xconst express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
@@ -10,14 +10,20 @@ const app = express();
 
 app.use(helmet());
 
+// CORS completamente abierto para GitHub Pages
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://127.0.0.1:5500',
-  credentials: true
+    origin: ['https://bonking14.github.io', 'http://localhost:4000', 'http://127.0.0.1:5500'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Para preflight requests
+app.options('*', cors());
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10,
+  max: 100, // Aumentado para pruebas
   message: { error: 'Demasiados intentos. Espera 15 minutos.' }
 });
 app.use('/api/auth', limiter);
@@ -32,4 +38,5 @@ app.get('/', (req, res) => {
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`✅ Servidor corriendo en puerto ${PORT}`);
+  console.log(`CORS permitiendo orígenes: https://bonking14.github.io, localhost:4000, localhost:5500`);
 });
